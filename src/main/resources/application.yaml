@@ -1,0 +1,8 @@
+spring:
+  data:
+    rest:
+      base-path: /services
+  main:
+    banner-mode: "on"
+server:
+  port: 8080
