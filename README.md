@@ -1,2 +1,5 @@
 # react-boot
-Spring Boot + Bootstrap + React + Webpack
+
+DEMO App
+
+Spring Boot + Bootstrap + React + Webpack + SockJS

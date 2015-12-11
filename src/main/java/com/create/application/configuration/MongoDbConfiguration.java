@@ -15,19 +15,14 @@
  *
  */
 
-package com.create.application;
+package com.create.application.configuration;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
-@SpringBootApplication
-@ComponentScan(basePackages = {
-        "com.create.application.configuration",
-        "com.create.controller"
+@Configuration
+@EnableMongoRepositories({
+        "com.create.repository"
 })
-public class Application {
-    public static void main(final String... args) {
-        SpringApplication.run(Application.class, args);
-    }
+public class MongoDbConfiguration {
 }

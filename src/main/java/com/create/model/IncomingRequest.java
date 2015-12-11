@@ -15,19 +15,26 @@
  *
  */
 
-package com.create.application;
+package com.create.model;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.annotation.Id;
 
-@SpringBootApplication
-@ComponentScan(basePackages = {
-        "com.create.application.configuration",
-        "com.create.controller"
-})
-public class Application {
-    public static void main(final String... args) {
-        SpringApplication.run(Application.class, args);
+public class IncomingRequest {
+
+    @Id
+    private String id;
+
+    public IncomingRequest() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public String toString() {
+        return "IncomingRequest{" +
+                "id=" + id +
+                '}';
     }
 }

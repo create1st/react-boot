@@ -16,10 +16,11 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Spring Boot + Bootstrap + React + Webpack + Atmosphere</name>
+    <name>Spring Boot + Bootstrap + React + Webpack + SockJS</name>
     <description>An SPA with ReactJS and Bootstrap in the frontend and Spring MVC in the backend</description>
 
     <properties>
+        <mongodb.embeded.version>1.50.1</mongodb.embeded.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <nodejs.version>v4.2.3</nodejs.version>
@@ -35,12 +36,28 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+            <artifactId>spring-boot-starter-data-rest</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>de.flapdoodle.embed</groupId>
+            <artifactId>de.flapdoodle.embed.mongo</artifactId>
+            <version>${mongodb.embeded.version}</version>
         </dependency>
 
         <dependency>

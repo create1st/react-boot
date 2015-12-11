@@ -15,19 +15,21 @@
  *
  */
 
-package com.create.application;
+package com.create.controller;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-@SpringBootApplication
-@ComponentScan(basePackages = {
-        "com.create.application.configuration",
-        "com.create.controller"
-})
-public class Application {
-    public static void main(final String... args) {
-        SpringApplication.run(Application.class, args);
+/**
+ * Home page Spring Thymeleaf controller.
+ */
+@Controller
+public class HomeController {
+
+    public static final String INDEX_TEMPLATE = "index";
+
+    @RequestMapping(value = "/")
+    public String index() {
+        return INDEX_TEMPLATE;
     }
 }

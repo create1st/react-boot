@@ -3,6 +3,12 @@ spring:
     rest:
       base-path: /services
   main:
-    banner-mode: "on"
+    banner-mode: on
 server:
   port: 8080
+stomp:
+  destination:
+    topic: /topic
+    name:
+      incomingRequest: /incomingRequest
+  endPoint: /streaming
