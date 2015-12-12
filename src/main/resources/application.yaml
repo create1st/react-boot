@@ -10,5 +10,5 @@ stomp:
   destination:
     topic: /topic
     name:
-      incomingRequest: /incomingRequest
+      ticket: /ticket
   endPoint: /streaming

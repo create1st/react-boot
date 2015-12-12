@@ -17,8 +17,9 @@
 
 package com.create.application.configuration;
 
-import com.create.repository.IncomingRequestRepository;
-import com.create.scheduler.IncomingRequestGenerator;
+import com.create.repository.PersonRepository;
+import com.create.repository.TicketRepository;
+import com.create.scheduler.TicketGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -32,7 +33,7 @@ public class SchedulerConfiguration {
 
     @Bean
     @Autowired
-    public IncomingRequestGenerator incomingRequestGenerator(final IncomingRequestRepository incomingRequestRepository, final SimpMessagingTemplate simpMessagingTemplate, final @Value("${stomp.destination.topic}") String destination, final @Value("${stomp.destination.name.incomingRequest}") String name) {
-        return new IncomingRequestGenerator(incomingRequestRepository, simpMessagingTemplate, destination + name);
+    public TicketGenerator ticketGenerator(final TicketRepository ticketRepository, final PersonRepository personRepository, final SimpMessagingTemplate simpMessagingTemplate, final @Value("${stomp.destination.topic}") String destination, final @Value("${stomp.destination.name.ticket}") String name) {
+        return new TicketGenerator(ticketRepository, personRepository, simpMessagingTemplate, destination + name);
     }
 }

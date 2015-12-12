@@ -9,7 +9,7 @@ define(function(require) {
 
 		function onServiceFail(error) {
             console.log('Connection error: ' + error);
-            service.onDisconnect();
+            service.onDisconnect(service.component);
             setTimeout(serviceConnect, 10000);
             console.log('Reconnecting in 10 seconds');
         };
@@ -19,8 +19,10 @@ define(function(require) {
        		var stompClient = Stomp.over(socket);
 
             stompClient.connect(headers, function() {
-                stompClient.subscribe(service.destination, service.onMessage);
-                service.onConnect();
+                stompClient.subscribe(service.destination, function(frame) {
+                    service.onMessage(service.component, frame);
+                });
+                service.onConnect(service.component);
             }, onServiceFail);
 		}
 

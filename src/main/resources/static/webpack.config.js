@@ -3,6 +3,7 @@ var path = require('path');
 
 module.exports = {
     entry: [
+        'bootstrap-webpack!./bootstrap.config.js',
         './app.js'
     ],
     devtool: 'sourcemaps',
@@ -15,6 +16,12 @@ module.exports = {
     node: {
         net: 'empty'
     },
+    plugins: [
+            new webpack.ProvidePlugin({
+                $: "jquery",
+                jQuery: "jquery"
+            })
+    ],
     module: {
         loaders: [
             {   test: path.join(__dirname, '.'),
