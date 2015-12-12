@@ -17,7 +17,7 @@
 
 package com.create.stomp;
 
-import com.create.model.IncomingRequest;
+import com.create.model.Ticket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.rest.core.annotation.HandleAfterCreate;
@@ -25,25 +25,25 @@ import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 /**
- * Rest data repository handler for {@link com.create.model.IncomingRequest}
+ * Rest data repository handler for {@link Ticket}
  */
-@RepositoryEventHandler(IncomingRequest.class)
-public class IncomingRequestEventHandler {
-    private static final Logger log = LoggerFactory.getLogger(IncomingRequestEventHandler.class);
+@RepositoryEventHandler(Ticket.class)
+public class TicketEventHandler {
+    private static final Logger log = LoggerFactory.getLogger(TicketEventHandler.class);
 
     private final SimpMessagingTemplate template;
 
     private final String destination;
 
-    public IncomingRequestEventHandler(final SimpMessagingTemplate template, final String destination) {
+    public TicketEventHandler(final SimpMessagingTemplate template, final String destination) {
         this.template = template;
         this.destination = destination;
     }
 
     @HandleAfterCreate
-    public void onIncomingRequest(final IncomingRequest incomingRequest) {
-        log.debug("onIncomingRequest : {}", incomingRequest);
+    public void onTicket(final Ticket ticket) {
+        log.debug("onTicket : {}", ticket);
 
-        template.convertAndSend(destination, incomingRequest);
+        template.convertAndSend(destination, ticket);
     }
 }

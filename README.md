@@ -1,5 +1,7 @@
-# react-boot
+# Spring Boot + Bootstrap + React + Webpack + SockJS
 
-DEMO App
+Ticketing service DEMO app
 
-Spring Boot + Bootstrap + React + Webpack + SockJS
+Every 30 sec. system will generate new random ticket which will be stored in MongoDB on server side and pop up in table on client side. 
+
+

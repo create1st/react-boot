@@ -17,11 +17,11 @@
 
 package com.create.repository;
 
-import com.create.model.IncomingRequest;
+import com.create.model.Ticket;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**
- * {@link com.create.model.IncomingRequest} repository
+ * {@link Ticket} repository
  */
-public interface IncomingRequestRepository extends MongoRepository<IncomingRequest, String> {
+public interface TicketRepository extends MongoRepository<Ticket, String> {
 }

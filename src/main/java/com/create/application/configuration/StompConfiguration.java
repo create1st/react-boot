@@ -17,7 +17,7 @@
 
 package com.create.application.configuration;
 
-import com.create.stomp.IncomingRequestEventHandler;
+import com.create.stomp.TicketEventHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -63,7 +63,7 @@ public class StompConfiguration {
 
     @Bean
     @Autowired
-    public IncomingRequestEventHandler incomingRequestEventHandler(final SimpMessagingTemplate template, final @Value("${stomp.destination.topic}") String destination, final @Value("${stomp.destination.name.incomingRequest}") String name) {
-        return new IncomingRequestEventHandler(template, destination + name);
+    public TicketEventHandler ticketEventHandler(final SimpMessagingTemplate template, final @Value("${stomp.destination.topic}") String destination, final @Value("${stomp.destination.name.ticket}") String name) {
+        return new TicketEventHandler(template, destination + name);
     }
 }
