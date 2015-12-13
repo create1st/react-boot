@@ -20,7 +20,9 @@ module.exports = {
             new webpack.ProvidePlugin({
                 $: "jquery",
                 jQuery: "jquery"
-            })
+            }),
+            new webpack.HotModuleReplacementPlugin(),
+            new webpack.NoErrorsPlugin()
     ],
     module: {
         loaders: [
