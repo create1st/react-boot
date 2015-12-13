@@ -2,7 +2,10 @@
 
 const React = require('react');
 const ReactDOM = require('react-dom');
+const Griddle = require('griddle-react');
 const stompClient = require('./pubsub');
+
+
 
 // <App/>
 class App extends React.Component {
@@ -29,7 +32,7 @@ class App extends React.Component {
         
         var tickets = component.state.tickets.slice(0);        
         tickets.push(JSON.parse(frame.body));
-        component.setState( {
+        component.setState({
             tickets: tickets
         });
     }
@@ -42,10 +45,26 @@ class App extends React.Component {
         console.log('onNewTicketServiceDisconnect');
     }
 
+    onTicketSelected(component, id) {
+        console.log('onTicketSelected', id);
+
+        var tickets = component.state.tickets.slice(0);
+        tickets.forEach(ticket => {
+            ticket.selected = id == ticket.id ? true : undefined;
+        });
+        component.setState({
+            tickets: tickets
+        });
+    }
+
 	render() {
+	    var component = this;
+	    var onTicketSelected = function(id) {
+	        component.onTicketSelected(component, id)
+	    };
         return (
             <div className="portlet">
-                <TicketTable tickets={this.state.tickets}/>
+                <TicketTable onTicketSelected={onTicketSelected} tickets={this.state.tickets}/>
             </div>
         )
     }
@@ -53,34 +72,65 @@ class App extends React.Component {
 
 // <TicketTable/>
 class TicketTable extends React.Component {
-    render() {
-		var tickets = this.props.tickets.map(ticket =>
-			<Ticket key={ticket.id} ticket={ticket}/>
-		);
-		return (
-			<table className="table table-striped">
-			    <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Created by</th>
-                    </tr>
-				</thead>
-				<tbody>
-				    {tickets}
-				</tbody>
-			</table>
-		)
-	}
-}
+	constructor(props) {
+		super(props);
+        this.columnMeta = [
+             {
+                 "columnName": "id",
+                 "displayName": "ID",
+                 "order": 1,
+                 "locked": false,
+                 "visible": true,
+             },
+             {
+                 "columnName": "name",
+                 "displayName": "Created by",
+                 "order": 2,
+                 "locked": false,
+                 "visible": true,
+             }
+        ];
+        this.rowMetadata = {
+             "bodyCssClassName": function(rowData) {
+                 if (rowData.selected) {
+                     return "info";
+                 }
+                 return "";
+             }
+        };
+    }
 
-// <Ticket/>
-class Ticket extends React.Component{
-	render() {
+    render() {
+        var onTicketSelected = this.props.onTicketSelected;
+        var data = this.props.tickets.map(ticket => {
+            return {
+                id: ticket.id,
+                name: ticket.owner.firstName + " " + ticket.owner.lastName,
+                selected: ticket.selected
+            }
+        });
+        var onRowClick = function(gridRow, event) {
+            var id = gridRow.props.data.id;
+            onTicketSelected(id);
+        }
 		return (
-			<tr>
-				<td>{this.props.ticket.id}</td>
-				<td>{this.props.ticket.owner.firstName} {this.props.ticket.owner.lastName}</td>
-			</tr>
+		    <div className="panel panel-default">
+		        <div className="panel-heading">Tickets</div>
+                <Griddle results={data}
+                    noDataMessage={"No data could be found."}
+                    showFilter={true}
+                    onRowClick={onRowClick}
+                    columns={['id', "name"]}
+                    columnMetadata={this.columnMeta}
+                    rowMetadata={this.rowMetadata}
+                    tableClassName="table table-striped table-scroll"
+                    useGriddleStyles={false}
+                    resultsPerPage={5}
+                    bodyHeight={400}
+                    enableInfiniteScroll={true}
+                    useFixedHeader={true}
+                    />
+		    </div>
 		)
 	}
 }
