@@ -20,51 +20,47 @@ class App extends React.Component {
         var ticketService = {
             component: this,
             destination: '/topic/ticket',
-            onMessage: this.onNewTicketMessage,
-            onConnect: this.onNewTicketServiceConnect,
-            onDisconnect: this.onNewTicketServiceDisconnect
+            onMessage: this.onNewTicketMessage.bind(this),
+            onConnect: this.onNewTicketServiceConnect.bind(this),
+            onDisconnect: this.onNewTicketServiceDisconnect.bind(this)
         };
 		stompClient.subscribe(ticketService);
     }
 
-    onNewTicketMessage(component, frame) {
+    onNewTicketMessage(frame) {
         console.log('onNewTicketMessage', frame);
         
-        var tickets = component.state.tickets.slice(0);        
+        var tickets = this.state.tickets.slice(0);
         tickets.push(JSON.parse(frame.body));
-        component.setState({
+        this.setState({
             tickets: tickets
         });
     }
 
-    onNewTicketServiceConnect(component) {
+    onNewTicketServiceConnect() {
         console.log('onNewTicketServiceConnect');
     }
 
-    onNewTicketServiceDisconnect(component) {
+    onNewTicketServiceDisconnect() {
         console.log('onNewTicketServiceDisconnect');
     }
 
-    onTicketSelected(component, id) {
+    onTicketSelected(id) {
         console.log('onTicketSelected', id);
 
-        var tickets = component.state.tickets.slice(0);
-        tickets.forEach(ticket => {
+        var tickets = this.state.tickets.map(ticket => {
             ticket.selected = id == ticket.id ? true : undefined;
+            return ticket;
         });
-        component.setState({
+        this.setState({
             tickets: tickets
         });
     }
 
 	render() {
-	    var component = this;
-	    var onTicketSelected = function(id) {
-	        component.onTicketSelected(component, id)
-	    };
         return (
             <div className="portlet">
-                <TicketTable onTicketSelected={onTicketSelected} tickets={this.state.tickets}/>
+                <TicketTable onTicketSelected={this.onTicketSelected.bind(this)} tickets={this.state.tickets}/>
             </div>
         )
     }
@@ -100,8 +96,12 @@ class TicketTable extends React.Component {
         };
     }
 
-    render() {
-        var onTicketSelected = this.props.onTicketSelected;
+    onRowClick(gridRow, event) {
+        var id = gridRow.props.data.id;
+        this.props.onTicketSelected(id);
+    }
+
+    getTableRows() {
         var data = this.props.tickets.map(ticket => {
             return {
                 id: ticket.id,
@@ -109,17 +109,18 @@ class TicketTable extends React.Component {
                 selected: ticket.selected
             }
         });
-        var onRowClick = function(gridRow, event) {
-            var id = gridRow.props.data.id;
-            onTicketSelected(id);
-        }
+        return data;
+    }
+
+    render() {
+        var data = this.getTableRows();
 		return (
 		    <div className="panel panel-default">
 		        <div className="panel-heading">Tickets</div>
                 <Griddle results={data}
                     noDataMessage={"No data could be found."}
                     showFilter={true}
-                    onRowClick={onRowClick}
+                    onRowClick={this.onRowClick.bind(this)}
                     columns={['id', "name"]}
                     columnMetadata={this.columnMeta}
                     rowMetadata={this.rowMetadata}
