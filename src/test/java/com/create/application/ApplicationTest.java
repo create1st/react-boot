@@ -17,16 +17,20 @@
 
 package com.create.application;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
-@SpringBootApplication
-@ComponentScan(basePackages = {
-        "com.create.application.configuration"
-})
-public class Application {
-    public static void main(final String... args) {
-        SpringApplication.run(Application.class, args);
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = Application.class)
+@WebAppConfiguration
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
+public class ApplicationTest {
+
+    @Test
+    public void contextLoads() {
     }
 }

@@ -3,9 +3,9 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 const Griddle = require('griddle-react');
-const stompClient = require('./pubsub');
-
-
+const Rest = require('rest');
+const StompClient = require('./pubsub');
+const RestClient = require('./rest-client');
 
 // <App/>
 class App extends React.Component {
@@ -24,12 +24,19 @@ class App extends React.Component {
             onConnect: this.onNewTicketServiceConnect.bind(this),
             onDisconnect: this.onNewTicketServiceDisconnect.bind(this)
         };
-		stompClient.subscribe(ticketService);
+		StompClient.subscribe(ticketService);
+    }
+
+    doInitialTicketsFetch() {
+        console.log('doInitialTicketsFetch');
+        RestClient.get('/tickets/list', function(response) {
+            console.log('/tickets/list', response);
+            this.setState({ tickets: response.entity });
+        }.bind(this));
     }
 
     onNewTicketMessage(frame) {
         console.log('onNewTicketMessage', frame);
-        
         var tickets = this.state.tickets.slice(0);
         tickets.push(JSON.parse(frame.body));
         this.setState({
@@ -39,6 +46,7 @@ class App extends React.Component {
 
     onNewTicketServiceConnect() {
         console.log('onNewTicketServiceConnect');
+        this.doInitialTicketsFetch();
     }
 
     onNewTicketServiceDisconnect() {
@@ -59,8 +67,9 @@ class App extends React.Component {
 
 	render() {
         return (
+//           {...props}
             <div className="portlet">
-                <TicketTable onTicketSelected={this.onTicketSelected.bind(this)} tickets={this.state.tickets}/>
+                <TicketTable onTicketSelected={this.onTicketSelected.bind(this)} tickets={this.state.tickets} />
             </div>
         )
     }

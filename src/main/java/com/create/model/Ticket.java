@@ -31,8 +31,13 @@ public class Ticket {
     public Ticket() {
     }
 
-    public Ticket(final Person owner) {
+    public Ticket(final String id, final Person owner) {
+        this.id = id;
         this.owner = owner;
+    }
+
+    public Ticket(final Person owner) {
+        this(null, owner);
     }
 
     public String getId() {

@@ -26,10 +26,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Stream;
 
 /**
  * {@link Ticket} generator for simulation and testing purpose
@@ -55,14 +53,6 @@ public class TicketGenerator {
         this.random = new Random();
     }
 
-    @PostConstruct
-    public void initialize() {
-        Stream.of(new Person("Adam", "Smith"),
-                new Person("Eva", "Mendes"),
-                new Person("Emma", "Abrams"),
-                new Person("Lucas", "Cole"))
-                .forEach(personRepository::save);
-    }
 
     @Scheduled(fixedRate = 30_000)
     public void createTicket() {

@@ -30,9 +30,14 @@ public class Person {
     public Person() {
     }
 
-    public Person(final String firstName, final String lastName) {
+    public Person(final String id, final String firstName, final String lastName) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    public Person(final String firstName, final String lastName) {
+        this(null, firstName, lastName);
     }
 
     public String getId() {

@@ -17,6 +17,12 @@
 
 package com.create.application.configuration;
 
+import com.create.repository.PersonRepository;
+import com.create.repository.TicketRepository;
+import com.create.repository.loader.PersonLoader;
+import com.create.repository.loader.TicketLoader;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
@@ -24,5 +30,16 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableMongoRepositories({
         "com.create.repository"
 })
+@EnableAutoConfiguration
 public class MongoDbConfiguration {
+
+    @Bean
+    public PersonLoader personLoader(final PersonRepository personRepository) {
+        return new PersonLoader(personRepository);
+    }
+
+    @Bean
+    public TicketLoader ticketLoader(final TicketRepository ticketRepository, final PersonRepository personRepository) {
+        return new TicketLoader(ticketRepository, personRepository);
+    }
 }
